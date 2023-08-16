@@ -42,11 +42,21 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
   }
 
   data = {
-    "provider" = "AWS"
-    "region" = "us-west-1"
-    "endpoint" = "s3.us-west-1.wasabisys.com"
-    "aws_access_key_id" = var.aws_access_key_id
-    "aws_secret_access_key" = var.aws_secret_access_key
+    connection = yamlencode({
+      "provider" = "AWS"
+      "region" = "us-west-1"
+      "endpoint" = "s3.us-west-1.wasabisys.com"
+      "aws_access_key_id" = var.aws_access_key_id
+      "aws_secret_access_key" = var.aws_secret_access_key
+    })
+    config = <<INI
+    [default]
+    access_key = ${var.aws_access_key_id}
+    secret_key = ${var.aws_secret_access_key}
+
+    bucket_location = us-west-1
+    host_base = s3.us-west-1.wasabisys.com
+    INI
   }
 
   depends_on = [
@@ -86,8 +96,16 @@ spec:
           object_store:
             connection:
               secret: gitlab-wasabi-secret
+              key: connection
       certmanager-issuer:
         email: inquiry@midstall.com
+      gitlab:
+        toolbox:
+          backups:
+            objectStorage:
+              config:
+                secret: gitlab-wasabi-secret
+                key: config
 YAML
 
   depends_on = [
