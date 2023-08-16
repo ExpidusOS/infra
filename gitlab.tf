@@ -89,6 +89,8 @@ resource "kubernetes_manifest" "gitlab" {
   ]
 
   wait {
-    rollout = true
+    fields = {
+      "status.phase" = "Running"
+    }
   }
 }
