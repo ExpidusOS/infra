@@ -85,14 +85,29 @@ spec:
         appConfig:
           lfs:
             bucket: expidusos-gitlab-lfs-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+              key: connection
           artifacts:
             bucket: expidusos-gitlab-artifacts-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+              key: connection
           uploads:
             bucket: expidusos-gitlab-uploads-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+              key: connection
           packages:
             bucket: expidusos-gitlab-packages-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+              key: connection
           backups:
             bucket: expidusos-gitlab-backups-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+              key: connection
           object_store:
             connection:
               secret: gitlab-wasabi-secret
