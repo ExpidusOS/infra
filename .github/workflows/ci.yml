@@ -39,6 +39,7 @@ jobs:
           region=${{ matrix.region }}
           aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}
           aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}
+
           EOF
       - name: Init
         run: terraform init
