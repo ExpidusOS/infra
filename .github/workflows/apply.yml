@@ -1,11 +1,14 @@
 name: CI
 
-on: issue_comment
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  deploy:
-    name: Deploy to GKE
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '!terraform apply') && github.repository_owner == 'ExpidusOS' }}
+  plan:
+    name: Apply to GKE
+    if: ${{ github.repository_owner == 'ExpidusOS' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -18,8 +21,6 @@ jobs:
         region: [us-west1]
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: refs/pull/${{ github.event.issue.number }}/merge
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1.1.1'
@@ -40,4 +41,6 @@ jobs:
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
       - name: Apply
-        uses: dflook/terraform-apply@v1.29.1
+        uses: dflook/terraform-apply@v1.36.1
+        with:
+          auto_approve: true
