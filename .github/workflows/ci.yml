@@ -34,4 +34,4 @@ jobs:
       - name: Init
         run: terraform init -var="region=${{ matrix.region }}" -var="aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}" -var="aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}"
       - name: Deploy
-        run: terraform apply -var="region=${{ matrix.region }}" -var="aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}" -var="aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}"
+        run: terraform apply -var="region=${{ matrix.region }}" -var="aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}" -var="aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}" -auto-approve
