@@ -82,7 +82,7 @@ resource "kubernetes_manifest" "gitlab" {
   }
 
   depends_on = [
-    kubernetes_secret.gitlab-wasabi-secret
+    kubernetes_secret.gitlab-wasabi-secret,
     helm_release.gitlab-operator
   ]
 }
