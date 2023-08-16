@@ -22,7 +22,14 @@
           rev = "git+${self.shortRev or "dirty"}";
           name = "${pname}-${rev}";
 
-          packages = with pkgs; [ minikube google-cloud-sdk terraform ];
+          packages = with pkgs; [
+            minikube
+            terraform
+            kubectl
+            (google-cloud-sdk.withExtraComponents [
+              google-cloud-sdk.components.gke-gcloud-auth-plugin
+            ])
+          ];
         };
       });
 }
