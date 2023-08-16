@@ -7,6 +7,8 @@ jobs:
     name: Deploy to GKE
     if: github.repository_owner == 'ExpidusOS'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     strategy:
       matrix:
         region: [us-west1]
