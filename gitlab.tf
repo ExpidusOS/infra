@@ -64,20 +64,21 @@ metadata:
 spec:
   chart:
     version: 7.2.4
-    global:
-      hosts:
-        domain: gitlab.expidusos.com
-      ingress:
-        configureCertmanager: true
-      minio:
-        enabled: false
-      appConfig:
-        object_store:
+    values:
+      global:
+        hosts:
+          domain: gitlab.expidusos.com
+        ingress:
+          configureCertmanager: true
+        minio:
           enabled: false
-          connection:
-            secret: gitlab-wasabi-secret
-    certmanager-issuer:
-      email: inquiry@midstall.com
+        appConfig:
+          object_store:
+            enabled: false
+            connection:
+              secret: gitlab-wasabi-secret
+      certmanager-issuer:
+        email: inquiry@midstall.com
 YAML
 
   depends_on = [
