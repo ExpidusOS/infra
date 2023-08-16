@@ -9,6 +9,11 @@ resource "helm_release" "gitlab-operator" {
   wait = true
   wait_for_jobs = true
 
+  atomic = true
+  cleanup_on_fail = true
+  recreate_pods = true
+  verify = false
+
   set {
     name = "gitlab.gitaly.persistence.size"
     value = "10Gi"
@@ -29,12 +34,6 @@ variable "aws_secret_access_key" {
   sensitive = true
 }
 
-resource "kubernetes_namespace" "gitlab" {
-  metadata {
-    name = "gitlab"
-  }
-}
-
 resource "kubernetes_secret" "gitlab-wasabi-secret" {
   metadata {
     name = "gitlab-wasabi-secret"
@@ -48,10 +47,6 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
     "aws_access_key_id" = var.aws_access_key_id
     "aws_secret_access_key" = var.aws_secret_access_key
   }
-
-  depends_on = [
-    kubernetes_namespace.gitlab
-  ]
 }
 
 resource "kubectl_manifest" "gitlab" {
