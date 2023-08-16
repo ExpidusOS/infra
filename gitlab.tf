@@ -86,7 +86,7 @@ resource "kubernetes_manifest" "gitlab" {
     helm_release.gitlab-operator
   ]
 
-  wait = {
+  wait {
     fields = {
       "status.conditions[0].status" = "True",
     } 
