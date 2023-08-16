@@ -44,7 +44,7 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
   data = {
     "provider" = "AWS"
     "region" = "us-west-1"
-    "endpoint" = "expidusos-gitlab-us-west-1.s3.wasabisys.com"
+    "endpoint" = "s3.us-west-1.wasabisys.com"
     "aws_access_key_id" = var.aws_access_key_id
     "aws_secret_access_key" = var.aws_secret_access_key
   }
@@ -73,8 +73,23 @@ spec:
         minio:
           enabled: false
         appConfig:
+          lfs:
+            bucket: expidusos-gitlab-lfs-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+          artifacts:
+            bucket: expidusos-gitlab-artifacts-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+          uploads:
+            bucket: expidusos-gitlab-uploads-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
+          packages:
+            bucket: expidusos-gitlab-packages-us-west-1
+            connection:
+              secret: gitlab-wasabi-secret
           object_store:
-            enabled: false
             connection:
               secret: gitlab-wasabi-secret
       certmanager-issuer:
