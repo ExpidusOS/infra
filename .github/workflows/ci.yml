@@ -11,6 +11,8 @@ jobs:
       id-token: write
       contents: read
       pull-requests: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         region: [us-west1]
@@ -40,7 +42,5 @@ jobs:
           aws_access_key_id = "${{ secrets.WASABI_ACCESS_KEY }}"
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
-      - name: Init
-        run: terraform init
       - name: Apply
         uses: dflook/terraform-apply@v1.29.1
