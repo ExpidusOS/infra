@@ -1,0 +1,43 @@
+name: Plan
+
+on: issue_comment
+
+jobs:
+  plan:
+    name: Plan GKE
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '!terraform plan') && github.repository_owner == 'ExpidusOS' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        region: [us-west1]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/merge
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1.1.1'
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: 'projects/769178210270/locations/global/workloadIdentityPools/ci-pool/providers/github'
+          service_account: 'github-ci@expidusos-infra.iam.gserviceaccount.com'
+      - id: get-gke-credentials
+        uses: google-github-actions/get-gke-credentials@v1.0.2
+        with:
+          cluster_name: infra-${{ matrix.region }}
+          location: ${{ matrix.region }}
+      - name: Write variables
+        run: |
+          cat << EOF > terraform.tfvars
+          region = "${{ matrix.region }}"
+          aws_access_key_id = "${{ secrets.WASABI_ACCESS_KEY }}"
+          aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
+          EOF
+      - name: Apply
+        uses: dflook/terraform-plan@v1.36.1
