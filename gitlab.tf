@@ -7,6 +7,10 @@ resource "helm_release" "gitlab-operator" {
   namespace = "gitlab-system"
   wait = true
   wait_for_jobs = true
+
+  depends_on = [
+    helm_release.cert-manager
+  ]
 }
 
 variable "aws_access_key_id" {
