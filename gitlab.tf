@@ -5,6 +5,7 @@ resource "helm_release" "gitlab-operator" {
   chart = "gitlab-operator"
 
   namespace = "gitlab-system"
+  create_namespace = true
   wait = true
   wait_for_jobs = true
 
