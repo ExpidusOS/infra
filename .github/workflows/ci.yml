@@ -1,11 +1,11 @@
 name: CI
 
-on: push
+on: issue_comment
 
 jobs:
   deploy:
     name: Deploy to GKE
-    if: github.repository_owner == 'ExpidusOS'
+    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '!terraform apply') && github.repository_owner == 'ExpidusOS' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -18,11 +18,8 @@ jobs:
         region: [us-west1]
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.4
-          terraform_wrapper: false
+          ref: refs/pull/${{ github.event.issue.number }}/merge
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1.1.1'
