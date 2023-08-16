@@ -100,6 +100,9 @@ spec:
       certmanager-issuer:
         email: inquiry@midstall.com
       gitlab:
+        gitaly:
+          persistence:
+            size: 10Gi
         toolbox:
           backups:
             objectStorage:
