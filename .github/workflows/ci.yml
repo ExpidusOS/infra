@@ -25,7 +25,7 @@ jobs:
         with:
           token_format: 'access_token'
           workload_identity_provider: 'projects/769178210270/locations/global/workloadIdentityPools/ci-pool/providers/github'
-          service_account: 'github-ci@expidus-infra.iam.gserviceaccount.com'
+          service_account: 'github-ci@expidusos-infra.iam.gserviceaccount.com'
       - id: get-gke-credentials
         uses: google-github-actions/get-gke-credentials@v0.4.0
         with:
