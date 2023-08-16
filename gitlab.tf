@@ -5,6 +5,7 @@ resource "helm_release" "gitlab-operator" {
   chart = "gitlab-operator"
 
   namespace = "gitlab-system"
+  wait = true
 }
 
 variable "aws_access_key_id" {
