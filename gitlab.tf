@@ -85,4 +85,10 @@ resource "kubernetes_manifest" "gitlab" {
     kubernetes_secret.gitlab-wasabi-secret,
     helm_release.gitlab-operator
   ]
+
+  wait = {
+    fields = {
+      "status.conditions[0].status" = "True",
+    } 
+  }
 }
