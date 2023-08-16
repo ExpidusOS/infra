@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: read
+      pull-requests: write
     strategy:
       matrix:
         region: [us-west1]
@@ -31,7 +33,14 @@ jobs:
         with:
           cluster_name: infra-${{ matrix.region }}
           location: ${{ matrix.region }}
+      - name: Write variables
+        run: |
+          cat << EOF > terraform.tfvars
+          region=${{ matrix.region }}
+          aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}
+          aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}
+          EOF
       - name: Init
-        run: terraform init -var="region=${{ matrix.region }}" -var="aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}" -var="aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}"
-      - name: Deploy
-        run: terraform apply -var="region=${{ matrix.region }}" -var="aws_access_key_id=${{ secrets.WASABI_ACCESS_KEY }}" -var="aws_secret_access_key=${{ secrets.WASABI_SECRET_KEY }}" -auto-approve
+        run: terraform init
+      - name: Apply
+        uses: dflook/terraform-apply@v1.29.1
