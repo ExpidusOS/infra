@@ -44,53 +44,34 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
   ]
 }
 
-resource "kubernetes_manifest" "gitlab" {
-  manifest = {
-    "apiVersion" = "apps.gitlab.com/v1beta1"
-    "kind" = "GitLab"
-    "metadata" = {
-      "name" = "gitlab"
-      "namespace" = "gitlab-system"
-    }
-    "spec" = {
-      "chart" = {
-        "version" = "7.2.4"
-        "values" = {
-          "global" = {
-            "hosts" = {
-              "domain" = "gitlab.expidusos.com"
-            }
-            "ingress" = {
-              "configureCertmanager" = true
-            }
-            "minio" = {
-              "enabled" = false
-            }
-            "appConfig" = {
-              "object_store" = {
-                "enabled" = true
-                "connection" = {
-                  "secret" = "gitlab-wasabi-secret"
-                }
-              }
-            }
-          }
-          "certmanager-issuer" = {
-            "email" = "inquiry@midstall.com"
-          }
-        }
-      }
-    }
-  }
+resource "kubectl_manifest" "gitlab" {
+  yaml_body = <<YAML
+apiVersion: apps.gitlab.com/v1beta1
+kind: GitLab
+metadata:
+  name: gitlab
+  namespace: gitlab-system
+spec:
+  chart:
+    version: 7.2.4
+    global:
+      hosts:
+        domain: gitlab.expidusos.com
+      ingress:
+        configureCertmanager: true
+      minio:
+        enabled: false
+      appConfig:
+        object_store:
+          enabled: false
+          connection:
+            secret: gitlab-wasabi-secret
+    certmanager-issuer:
+      email: inquiry@midstall.com
+YAML
 
   depends_on = [
     kubernetes_secret.gitlab-wasabi-secret,
     helm_release.gitlab-operator
   ]
-
-  wait {
-    fields = {
-      "status.phase" = "Running"
-    }
-  }
 }
