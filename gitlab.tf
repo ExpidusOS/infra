@@ -89,6 +89,7 @@ resource "kubernetes_manifest" "gitlab" {
   ]
 
   wait {
+    rollout = true
     fields = {
       "status.conditions[0].status" = "True",
     } 
