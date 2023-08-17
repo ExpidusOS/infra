@@ -46,6 +46,15 @@ jobs:
           access_key = "${{ secrets.WASABI_ACCESS_KEY }}"
           secret_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
+      - uses: keithweaver/aws-s3-github-action@v1.0.0
+        with:
+          command: cp
+          desintation: ./terraform.tfstate
+          source: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
+          aws_access_key_id: ${{ secrets.WASABI_ACCESS_KEY }}
+          aws_secret_access_key: ${{ secrets.WASABI_SECRET_KEY }}
+          aws_region: us-west-1
+          flags: --endpoint-url https://s3.wasabisys.com
       - name: Plan
         uses: dflook/terraform-github-actions/terraform-plan@main
         with:
