@@ -9,6 +9,11 @@ resource "helm_release" "gitlab-operator" {
   wait = true
   wait_for_jobs = true
 
+  set {
+    name = "watchCluster"
+    value = "true"
+  }
+
   depends_on = [
     helm_release.cert-manager
   ]
