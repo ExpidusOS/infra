@@ -14,8 +14,8 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       AWS_REGION: ${{ matrix.region }}
-      AWS_ACCESS_KEY_ID: ${{ secret.WASABI_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secret.WASABI_SECRET_KEY }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.WASABI_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
     strategy:
       matrix:
         region: [us-west1]
