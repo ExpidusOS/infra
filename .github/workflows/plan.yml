@@ -13,6 +13,9 @@ jobs:
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_REGION: us-west-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.WASABI_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
     strategy:
       matrix:
         region: [us-west1]
@@ -20,6 +23,8 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: refs/pull/${{ github.event.issue.number }}/merge
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1.1.1'
@@ -39,15 +44,9 @@ jobs:
           aws_access_key_id = "${{ secrets.WASABI_ACCESS_KEY }}"
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
-      - uses: keithweaver/aws-s3-github-action@v1.0.0
-        with:
-          command: cp
-          destination: ./terraform.tfstate
-          source: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
-          aws_access_key_id: ${{ secrets.WASABI_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.WASABI_SECRET_KEY }}
-          aws_region: us-west-1
-          flags: --endpoint-url https://s3.wasabisys.com
+      - name: Pull Terraform State
+        run: |
+          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate ./terraform.state
       - name: Plan
         uses: dflook/terraform-github-actions/terraform-plan@main
         with:
