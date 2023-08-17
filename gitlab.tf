@@ -115,7 +115,7 @@ spec:
       gitlab:
         gitaly:
           persistence:
-            size: 10Gi
+            size: 25Gi
         toolbox:
           backups:
             objectStorage:
