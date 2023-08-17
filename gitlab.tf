@@ -9,11 +9,6 @@ resource "helm_release" "gitlab-operator" {
   wait = true
   wait_for_jobs = true
 
-  set {
-    name = "gitlab.gitaly.persistence.size"
-    value = "10Gi"
-  }
-
   depends_on = [
     helm_release.cert-manager
   ]
@@ -117,7 +112,7 @@ spec:
       gitlab:
         gitaly:
           persistence:
-            size: 10Gi
+            size: 20Gi
         toolbox:
           backups:
             objectStorage:
