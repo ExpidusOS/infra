@@ -65,7 +65,7 @@ apiVersion: apps.gitlab.com/v1beta1
 kind: GitLab
 metadata:
   name: gitlab
-  namespace: gitlab-system
+  namespace: gitlab
 spec:
   chart:
     version: 7.2.4
@@ -115,8 +115,9 @@ spec:
             size: 5Gi
       postgresql:
         persistence:
-          storageClass: standard
-          size: 5Gi
+          primary:
+            storageClass: standard
+            size: 5Gi
       gitlab:
         gitaly:
           persistence:
