@@ -1,4 +1,4 @@
-name: CI
+name: Apply
 
 on:
   push:
@@ -16,11 +16,16 @@ jobs:
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_REGION: us-west-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.WASABI_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
     strategy:
       matrix:
         region: [us-west1]
     steps:
       - uses: actions/checkout@v3
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1.1.1'
@@ -47,25 +52,13 @@ jobs:
           access_key = "${{ secrets.WASABI_ACCESS_KEY }}"
           secret_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
-      - uses: keithweaver/aws-s3-github-action@v1.0.0
-        with:
-          command: cp
-          destination: ./terraform.tfstate
-          source: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
-          aws_access_key_id: ${{ secrets.WASABI_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.WASABI_SECRET_KEY }}
-          aws_region: us-west-1
-          flags: --endpoint-url https://s3.wasabisys.com
+      - name: Pull Terraform State
+        run: |
+          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate ./terraform.state
       - name: Apply
         uses: dflook/terraform-github-actions/terraform-apply@main
         with:
           auto_approve: true
-      - uses: keithweaver/aws-s3-github-action@v1.0.0
-        with:
-          command: cp
-          source: ./terraform.tfstate
-          destination: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
-          aws_access_key_id: ${{ secrets.WASABI_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.WASABI_SECRET_KEY }}
-          aws_region: us-west-1
-          flags: --endpoint-url https://s3.wasabisys.com
+      - name: Push Terraform State
+        run: |
+          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp ./terraform.state s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
