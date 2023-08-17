@@ -72,7 +72,7 @@ spec:
     values:
       global:
         hosts:
-          domain: gitlab.expidusos.com
+          domain: expidusos.com
         ingress:
           configureCertmanager: true
         minio:
