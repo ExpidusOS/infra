@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 1.5.4"
   backend "s3" {
     bucket = "expidusos-ci"
     endpoint = "s3.us-west-1.wasabisys.com"
