@@ -13,8 +13,6 @@ jobs:
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.WASABI_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
     strategy:
       matrix:
         region: [us-west1]
@@ -41,5 +39,14 @@ jobs:
           aws_access_key_id = "${{ secrets.WASABI_ACCESS_KEY }}"
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
+      - name: Write s3.tfvars
+        run: |
+          cat << EOF > s3.tfvars
+          key = "/infra/${{ matrix.region }}"
+          access_key = "${{ secrets.WASABI_ACCESS_KEY }}"
+          secret_access = "${{ secrets.WASABI_SECRET_KEY }}"
+          EOF
       - name: Plan
         uses: dflook/terraform-github-actions/terraform-plan@main
+        with:
+          backend_config_file: s3.tfvars
