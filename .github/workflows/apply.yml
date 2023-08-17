@@ -16,8 +16,6 @@ jobs:
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.WASABI_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
     strategy:
       matrix:
         region: [us-west1]
@@ -42,15 +40,6 @@ jobs:
           aws_access_key_id = "${{ secrets.WASABI_ACCESS_KEY }}"
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
-      - name: Fetch remote state
-        uses: dflook/terraform-remote-state@v1.29.1
-        with:
-          backend_type: s3
-          backend_config: |
-            bucket = expidusos-ci
-            key = ${{ matrix.region }}
-            region = us-west-1
-            endpoint = s3.us-west-1.wasabisys.com
       - name: Apply
         uses: dflook/terraform-apply@v1.36.1
         with:
