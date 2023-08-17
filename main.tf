@@ -1,6 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "expidusos-ci"
+    key = "infra/terraform.tfstate"
     endpoint = "s3.us-west-1.wasabisys.com"
     region = "us-west-1"
   }
