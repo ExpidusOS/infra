@@ -45,7 +45,7 @@ jobs:
           cat << EOF > s3.tfvars
           key = "/infra/${{ matrix.region }}"
           access_key = "${{ secrets.WASABI_ACCESS_KEY }}"
-          secret_access = "${{ secrets.WASABI_SECRET_KEY }}"
+          secret_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
       - name: Apply
         uses: dflook/terraform-github-actions/terraform-apply@main
