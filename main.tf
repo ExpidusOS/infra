@@ -1,11 +1,8 @@
 terraform {
   backend "s3" {
     bucket = "expidusos-ci"
-    key = var.region
     endpoint = "s3.us-west-1.wasabisys.com"
     region = "us-west-1"
-    access_key = var.aws_access_key_id
-    secret_key = var.aws_secret_access_key
   }
 
   required_providers {
