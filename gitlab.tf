@@ -109,10 +109,17 @@ spec:
               key: connection
       certmanager-issuer:
         email: inquiry@midstall.com
+      redis:
+        master:
+          persistence:
+            size: 5Gi
+      postgresql:
+        persistence:
+          size: 5Gi
       gitlab:
         gitaly:
           persistence:
-            size: 20Gi
+            size: 10Gi
         toolbox:
           backups:
             objectStorage:
