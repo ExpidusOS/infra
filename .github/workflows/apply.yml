@@ -45,20 +45,13 @@ jobs:
           aws_access_key_id = "${{ secrets.WASABI_ACCESS_KEY }}"
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
-      - name: Write s3.tfvars
-        run: |
-          cat << EOF > s3.tfvars
-          key = "infra/${{ matrix.region }}/terraform.tfstate"
-          access_key = "${{ secrets.WASABI_ACCESS_KEY }}"
-          secret_key = "${{ secrets.WASABI_SECRET_KEY }}"
-          EOF
       - name: Pull Terraform State
         run: |
-          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate ./terraform.state
+          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate ./terraform.tfstate
       - name: Apply
         uses: dflook/terraform-github-actions/terraform-apply@main
         with:
           auto_approve: true
       - name: Push Terraform State
         run: |
-          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp ./terraform.state s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
+          aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp ./terraform.tfstate s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
