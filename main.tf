@@ -4,7 +4,7 @@ terraform {
     bucket = "expidusos-ci"
     key = "infra/terraform.tfstate"
     endpoint = "s3.wasabisys.com"
-    region = "us-west-1"
+    region = "us-east-1"
     profile = "default"
     skip_credentials_validation = true
     skip_metadata_api_check = true
