@@ -115,6 +115,7 @@ spec:
             size: 5Gi
       postgresql:
         persistence:
+          storageClass: standard
           size: 5Gi
       gitlab:
         gitaly:
