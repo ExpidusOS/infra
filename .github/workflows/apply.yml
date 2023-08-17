@@ -41,7 +41,7 @@ jobs:
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
       - name: Apply
-        uses: dflook/terraform-apply@v1.36.1
+        uses: dflook/terraform-apply@main
         with:
           auto_approve: true
           backend_config: |
