@@ -1,16 +1,5 @@
 terraform {
   required_version = ">= 1.5.4"
-  backend "s3" {
-    bucket = "expidusos-ci"
-    key = "infra/terraform.tfstate"
-    endpoint = "s3.wasabisys.com"
-    region = "us-east-1"
-    profile = "default"
-    skip_credentials_validation = true
-    skip_metadata_api_check = true
-    skip_region_validation = true
-  }
-
   required_providers {
     google = {
       source = "hashicorp/google"
