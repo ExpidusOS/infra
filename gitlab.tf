@@ -4,15 +4,10 @@ resource "helm_release" "gitlab-operator" {
   repository = "https://gitlab.com/api/v4/projects/18899486/packages/helm/stable"
   chart = "gitlab-operator"
 
-  namespace = "gitlab-system"
+  namespace = "gitlab"
   create_namespace = true
   wait = true
   wait_for_jobs = true
-
-  set {
-    name = "watchCluster"
-    value = "true"
-  }
 
   depends_on = [
     helm_release.cert-manager
@@ -27,12 +22,6 @@ variable "aws_access_key_id" {
 variable "aws_secret_access_key" {
   type = string
   sensitive = true
-}
-
-resource "kubernetes_namespace" "gitlab" {
-  metadata {
-    name = "gitlab"
-  }
 }
 
 resource "kubernetes_secret" "gitlab-wasabi-secret" {
@@ -60,7 +49,7 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
   }
 
   depends_on = [
-    kubernetes_namespace.gitlab
+    helm_release.gitlab-operator
   ]
 }
 
