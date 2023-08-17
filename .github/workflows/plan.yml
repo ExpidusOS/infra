@@ -49,5 +49,3 @@ jobs:
           aws s3 --endpoint-url=https://s3.us-west-1.wasabisys.com cp s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate ./terraform.tfstate
       - name: Plan
         uses: dflook/terraform-github-actions/terraform-plan@main
-        with:
-          backend_config_file: s3.tfvars
