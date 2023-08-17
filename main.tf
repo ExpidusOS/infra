@@ -3,12 +3,12 @@ terraform {
   backend "s3" {
     bucket = "expidusos-ci"
     key = "infra/terraform.tfstate"
-    endpoint = "https://s3.wasabisys.com"
-    region = "us-west-1"
-    skip_requesting_account_id = true
+    endpoint = "s3.wasabisys.com"
+    region = "us-east-1"
+    profile = "default"
     skip_credentials_validation = true
-    skip_get_ec2_platforms = true
     skip_metadata_api_check = true
+    skip_region_validation = true
   }
 
   required_providers {
