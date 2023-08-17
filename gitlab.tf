@@ -40,7 +40,7 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
     connection = yamlencode({
       "provider" = "AWS"
       "region" = "us-west-1"
-      "endpoint" = "s3.us-west-1.wasabisys.com"
+      "endpoint" = "https://s3.wasabisys.com"
       "aws_access_key_id" = var.aws_access_key_id
       "aws_secret_access_key" = var.aws_secret_access_key
     })
@@ -50,7 +50,7 @@ resource "kubernetes_secret" "gitlab-wasabi-secret" {
     secret_key = ${var.aws_secret_access_key}
 
     bucket_location = us-west-1
-    host_base = s3.us-west-1.wasabisys.com
+    host_base = s3.wasabisys.com
     INI
   }
 
