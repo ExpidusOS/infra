@@ -16,8 +16,6 @@ jobs:
       pull-requests: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      AWS_ACCESS_KEY_ID: ${{ secrets.WASABI_ACCESS_KEY }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.WASABI_SECRET_KEY }}
     strategy:
       matrix:
         region: [us-west1]
@@ -46,3 +44,10 @@ jobs:
         uses: dflook/terraform-apply@v1.36.1
         with:
           auto_approve: true
+          backend_config: |
+            bucket = "expidusos-ci"
+            key = "infra/${{ matrix.region }}/terraform.tfstate"
+            endpoint = "s3.us-west-1.wasabisys.com"
+            region = "us-west-1"
+            access_key = ${{ secrets.WASABI_ACCESS_KEY }}
+            secret_key = ${{ secrets.WASABI_SECRET_KEY }}
