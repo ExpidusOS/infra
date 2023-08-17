@@ -50,7 +50,7 @@ jobs:
       - uses: keithweaver/aws-s3-github-action@v1.0.0
         with:
           command: cp
-          desintation: ./terraform.tfstate
+          destination: ./terraform.tfstate
           source: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
           aws_access_key_id: ${{ secrets.WASABI_ACCESS_KEY }}
           aws_secret_access_key: ${{ secrets.WASABI_SECRET_KEY }}
@@ -64,7 +64,7 @@ jobs:
         with:
           command: cp
           source: ./terraform.tfstate
-          desintation: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
+          destination: s3://expidusos-ci/infra/${{ matrix.region }}/terraform.tfstate
           aws_access_key_id: ${{ secrets.WASABI_ACCESS_KEY }}
           aws_secret_access_key: ${{ secrets.WASABI_SECRET_KEY }}
           aws_region: us-west-1
