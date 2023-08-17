@@ -43,7 +43,7 @@ jobs:
       - name: Write s3.tfvars
         run: |
           cat << EOF > s3.tfvars
-          key = "/infra/${{ matrix.region }}"
+          key = "infra/${{ matrix.region }}"
           access_key = "${{ secrets.WASABI_ACCESS_KEY }}"
           secret_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
