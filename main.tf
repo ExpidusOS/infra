@@ -5,7 +5,9 @@ terraform {
     key = "infra/terraform.tfstate"
     endpoint = "https://s3.wasabisys.com"
     region = "us-east-1"
+    profile = "default"
     skip_credentials_validation = true
+    skip_metadata_api_check = true
     skip_metadata_api_check = true
   }
 
