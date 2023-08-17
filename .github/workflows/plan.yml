@@ -42,4 +42,4 @@ jobs:
           aws_secret_access_key = "${{ secrets.WASABI_SECRET_KEY }}"
           EOF
       - name: Plan
-        uses: dflook/terraform-plan@main
+        uses: dflook/terraform-github-actions/terraform-plan@main
