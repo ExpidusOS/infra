@@ -10,7 +10,7 @@ resource "helm_release" "gitlab-operator" {
   wait_for_jobs = true
 
   depends_on = [
-    resource.helm_release.cert-manager
+    resource.helm_release.cert-manager,
     resource.google_container_node_pool.infra-primary-nodes
   ]
 }
