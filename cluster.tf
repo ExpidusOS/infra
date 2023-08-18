@@ -31,7 +31,6 @@ resource "google_container_cluster" "infra" {
 
   cluster_autoscaling {
     enabled = true
-    autoscaling_profile = "OPTIMIZE_UTILIZATION"
 
     resource_limits {
       resource_type = "cpu"
