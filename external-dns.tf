@@ -25,6 +25,10 @@ resource "helm_release" "external-dns" {
     name = "cloudflare.email"
     value = "rosscomputerguy@protonmail.com"
   }
+
+  depends_on = [
+    resource.google_container_node_pool.infra-primary-nodes
+  ]
 }
 
 variable "cloudflare_token" {
