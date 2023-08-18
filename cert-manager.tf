@@ -11,4 +11,8 @@ resource "helm_release" "cert-manager" {
     name = "installCRDs"
     value = "true"
   }
+
+  depends_on = [
+    resource.google_container_node_pool.infra-primary-nodes
+  ]
 }
