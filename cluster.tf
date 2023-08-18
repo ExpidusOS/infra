@@ -50,7 +50,7 @@ resource "google_container_node_pool" "infra-primary-nodes" {
       "https://www.googleapis.com/auth/monitoring",
     ]
 
-    disk_type = "pb-standard"
+    disk_type = "pd-standard"
     disk_size_gb = 25
 
     machine_type = "n1-standard-1"
