@@ -90,7 +90,7 @@ resource "google_container_node_pool" "infra-primary-nodes" {
   cluster = resource.google_container_cluster.infra.name
   
   version = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
-  node_count = 2
+  node_count = 1
 
   autoscaling {
     min_node_count = 1
