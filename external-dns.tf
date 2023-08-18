@@ -7,6 +7,11 @@ resource "helm_release" "external-dns" {
   create_namespace = true
 
   set {
+    name = "provider"
+    value = "cloudflare"
+  }
+
+  set {
     name = "cloudflare.apiToken"
     value = var.cloudflare_token
   }
