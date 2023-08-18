@@ -52,12 +52,6 @@ resource "google_container_cluster" "infra" {
       ]
 
       disk_type = "pd-standard"
-      disk_size_gb = 25
-
-      machine_type = "n1-standard-1"
-      metadata = {
-        disable-legacy-endpoints = "true"
-      }
     }
   }
 
