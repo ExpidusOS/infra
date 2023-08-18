@@ -3,6 +3,7 @@ resource "helm_release" "external-dns" {
   chart = "external-dns"
 
   namespace = "external-dns"
+  name = "external-dns"
   create_namespace = true
 
   set {
