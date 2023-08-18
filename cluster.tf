@@ -28,6 +28,39 @@ resource "google_container_cluster" "infra" {
 
   network = resource.google_compute_network.infra-vpc.name
   subnetwork = resource.google_compute_subnetwork.infra-subnet.name
+
+  cluster_autoscaling {
+    enabled = true
+    autoscaling_profile = "OPTIMIZE_UTILIZATION"
+
+    resource_limits {
+      resource_type = "cpu"
+      minimum = 2
+      maximum = 24
+    }
+
+    resource_limits {
+      resource_type = "memory"
+      minimum = 8
+      maximum = 48
+    }
+  }
+
+  node_config {
+    service_account = data.google_service_account.default.email
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ]
+
+    disk_type = "pd-standard"
+    disk_size_gb = 25
+
+    machine_type = "n1-standard-1"
+    metadata = {
+      disable-legacy-endpoints = "true"
+    }
+  }
 }
 
 resource "google_container_node_pool" "infra-primary-nodes" {
