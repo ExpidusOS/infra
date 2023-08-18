@@ -43,6 +43,22 @@ resource "google_container_cluster" "infra" {
       minimum = 8
       maximum = 48
     }
+
+    auto_provisioning_defaults {
+      service_account = data.google_service_account.default.email
+      oauth_scopes = [
+        "https://www.googleapis.com/auth/logging.write",
+        "https://www.googleapis.com/auth/monitoring",
+      ]
+
+      disk_type = "pd-standard"
+      disk_size_gb = 25
+
+      machine_type = "n1-standard-1"
+      metadata = {
+        disable-legacy-endpoints = "true"
+      }
+    }
   }
 
   node_config {
@@ -58,6 +74,12 @@ resource "google_container_cluster" "infra" {
     machine_type = "n1-standard-1"
     metadata = {
       disable-legacy-endpoints = "true"
+    }
+  }
+
+  monitoring_config {
+    managed_prometheus {
+      enabled = true
     }
   }
 }
