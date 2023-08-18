@@ -44,7 +44,7 @@ resource "google_container_node_pool" "infra-primary-nodes" {
   }
 
   node_config {
-    service_account = resource.google_service_account.default.email
+    service_account = data.google_service_account.default.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/logging.write",
       "https://www.googleapis.com/auth/monitoring",
